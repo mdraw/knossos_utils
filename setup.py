@@ -10,32 +10,7 @@ from setuptools import setup, Extension
 from pkg_resources import parse_version
 
 
-# Setuptools >=18.0 is needed for Cython to work correctly.
-if parse_version(setuptools.__version__) < parse_version('18.0'):
-    print('\nYour installed Setuptools version is too old.')
-    print('Please upgrade it to at least 18.0, e.g. by running')
-    print('$ python{} -m pip install --upgrade setuptools'.format(sys.version_info[0]))
-    print('If this fails, try additionally passing the "--user" switch to the install command, or use Anaconda.')
-    sys.stdout.flush()
-    sys.exit(1)
-
-try:
-    import numpy
-except ImportError:
-    print("Numpy not found. Please install Numpy manually: http://www.scipy.org/install.html")
-    sys.stdout.flush()
-    sys.exit(1)
-
-extensions = [Extension(
-    "knossos_utils.mergelist_tools",
-    ["knossos_utils/mergelist_tools.pyx"],
-    include_dirs=[numpy.get_include()],
-    language="c++",
-    extra_compile_args=["-std=c++0x", "-include", "cmath"])
-]
-
 install_requires = [
-    "cython>=0.23",
     "h5py>=2.5",
     "numpy>=1.10",
     "scipy>=0.16",
@@ -61,10 +36,6 @@ setup(
     long_description=read("README.md"),
     packages=["knossos_utils"],
     data_files=[("", ["LICENSE"])],
-    ext_modules=extensions,
-    setup_requires=[
-        "cython>=0.23",
-    ],
     install_requires=install_requires,
     extras_require={
         "snappy": ["python-snappy>=0.5"],
